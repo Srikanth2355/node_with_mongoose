@@ -7,7 +7,7 @@ exports.getproducts = (req,res,next)=>{
     .then((products)=>{
         // console.log('products returned',products)
         res.render('shop/products_list',
-        {prods: products,pagetitle:'Products',path:'/products'})
+        {prods: products,pagetitle:'Products',path:'/products',isauthenticated: req.isLoggedIn})
     })
     .catch(err=>console.log(err))
 }
@@ -27,7 +27,7 @@ exports.getindex = (req,res,next)=>{
     Product.find()
     .then((products)=>{
         res.render('shop/index',
-        {prods: products,pagetitle:'Index',path:'/'})
+        {prods: products,pagetitle:'Index',path:'/',isauthenticated: req.isLoggedIn})
     })
     .catch(err=>console.log(err))
 }

@@ -2,6 +2,8 @@ const express = require('express')
 const bodyparser = require('body-parser')
 const adminroutes = require('./routes/admin')
 const shoproutes = require('./routes/shop')
+const authroutes = require('./routes/auth')
+
 const path = require('path') 
 const errorpage = require('./controllers/404')
 const user = require('./models/user')
@@ -25,13 +27,15 @@ app.use((req,res,next)=>{
 
 app.use('/admin',adminroutes)
 app.use(shoproutes)
+app.use(authroutes)
+
 
 app.set('view engine','ejs')
 app.set('views','views')
 
 app.use(errorpage.pagenotfound)
 
-mongoose.connect('mongodb+srv://gubbasrikanth2355:<PASSWORD>@nodejs-cluster.2oz3kso.mongodb.net/?retryWrites=true&w=majority')
+mongoose.connect('mongodb+srv://gubbasrikanth2355:Vh2LLxtgdYSAxEbg@nodejs-cluster.2oz3kso.mongodb.net/?retryWrites=true&w=majority')
 .then((result)=>{
     user.findOne().then(singleuser=>{
         if(!singleuser){
