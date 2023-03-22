@@ -23,7 +23,10 @@
                     <p class="product__description"><%= prod.description %></p>
                 </div>
                 <div class="card__actions">
-                    <%- include('../includes/add_to_cart.ejs',{prod:prod}) %>
+                    <% if(isauthenticated){ %>
+                        <%- include('../includes/add_to_cart.ejs',{prod:prod}) %>
+                    
+                    <% } %>
                 </div>
             </article>
             <% } %>

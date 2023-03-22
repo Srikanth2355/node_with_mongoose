@@ -2,7 +2,7 @@ const product = require('../models/product')
 const Product = require('../models/product')
 
 exports.getaddproduct = (req,res,next)=>{
-    res.render('admin/add_product',{pagetitle:"Add product",path:'admin/add-product'})
+    res.render('admin/add_product',{pagetitle:"Add product",path:'admin/add-product',isauthenticated: req.session.isLoggedIn})
 }
 
 exports.postaddproduct = (req,res,next)=>{
@@ -10,7 +10,7 @@ exports.postaddproduct = (req,res,next)=>{
     const imageurl = req.body.imageurl
     const price = req.body.price
     const description = req.body.description
-    const userId = req.user._id
+    const userId = req.session.user._id
     const product = new Product({title:title,imageUrl:imageurl,price:price,description:description,userId:userId,})
     product.save()
     .then(result=>{
@@ -23,7 +23,7 @@ exports.getproducts = (req,res,next)=>{
     Product.find()
     // req.user.getProducts()
     .then(products=>{
-        res.render('admin/products',{prods: products,pagetitle:'Admin Products',path:'admin/products'})
+        res.render('admin/products',{prods: products,pagetitle:'Admin Products',path:'admin/products',isauthenticated: req.session.isLoggedIn})
     })
     .catch(err=>console.log(err))
     
@@ -34,7 +34,7 @@ exports.editproduct = (req,res,next)=>{
     // Product.findByPk(productid)
     Product.findById(productid)
     .then(product=>{
-        res.render('admin/edit_product',{prod:product,pagetitle:'Edit Product',path:'admin/edit-product'})
+        res.render('admin/edit_product',{prod:product,pagetitle:'Edit Product',path:'admin/edit-product',isauthenticated: req.session.isLoggedIn})
     })
     .catch(err=>{
         console.log(err)
