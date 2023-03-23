@@ -10,7 +10,7 @@ exports.postaddproduct = (req,res,next)=>{
     const imageurl = req.body.imageurl
     const price = req.body.price
     const description = req.body.description
-    const userId = req.session.user._id
+    const userId = req.user._id
     const product = new Product({title:title,imageUrl:imageurl,price:price,description:description,userId:userId,})
     product.save()
     .then(result=>{

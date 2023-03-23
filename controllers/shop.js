@@ -33,7 +33,7 @@ exports.getindex = (req,res,next)=>{
 }
 
 exports.getcart = (req,res,next)=>{
-    req.session.user.populate('cart.items.productId')
+    req.user.populate('cart.items.productId')
     .then(user=>{
         const products = user.cart.items
             res.render('shop/cart',{
@@ -51,7 +51,7 @@ exports.postcart = (req,res,next)=>{
     const prodid = req.body.productid
     Product.findById(prodid)
     .then(product=>{
-        return req.session.user.addToCart(product)
+        return req.user.addToCart(product)
     })
     .then(result=>{
         console.log(result)
@@ -71,7 +71,7 @@ exports.getcheckout = (req,res,next)=>{
 
 exports.deleteproduct = (req,res,next)=>{
     const prodid = req.body.id
-    req.session.user.removeFromCart(prodid)
+    req.user.removeFromCart(prodid)
     .then(()=>{
         res.redirect('/cart')
     })
@@ -79,7 +79,7 @@ exports.deleteproduct = (req,res,next)=>{
 }
 
 exports.postcreateorder = (req,res,next)=>{
-    req.session.user.populate('cart.items.productId')
+    req.user.populate('cart.items.productId')
     .then(user=>{
         const products=user.cart.items.map(i=>{
             return {quantity:i.quantity,product:{...i.productId._doc}}
@@ -87,15 +87,15 @@ exports.postcreateorder = (req,res,next)=>{
         console.log("prod",products)
         const order = new Order({
             user:{
-                name:req.session.user.name,
-                userId:req.session.user
+                name:req.user.name,
+                userId:req.user
             },
             products:products
         })
         return order.save()
     })
     .then(result=>{
-        return req.session.user.clearCart()
+        return req.user.clearCart()
         
     })
     .then(result=>{
@@ -107,7 +107,7 @@ exports.postcreateorder = (req,res,next)=>{
 }
 
 exports.getorders = (req,res,next)=>{
-    Order.find({'user.userId':req.session.user._id})
+    Order.find({'user.userId':req.user._id})
     .then(orders=>{
         console.log("orders",orders.products)
         res.render('shop/orders',{

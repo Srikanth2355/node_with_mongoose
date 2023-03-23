@@ -23,6 +23,17 @@ app.use(bodyparser.urlencoded({ extended:true}))
 app.use(express.static(path.join(__dirname,'public')))
 app.use(session({secret:'my secret',resave:false,saveUninitialized:false,store:store}))
 
+app.use((req,res,next)=>{
+    if(!req.session.user){
+        return next()
+    }
+    user.findById(req.session.user._id)
+        .then(user1=>{
+            req.user = user1
+            next()
+        })
+        .catch(err=>console.log(err))
+})
 app.use('/admin',adminroutes)
 app.use(shoproutes)
 app.use(authroutes)
