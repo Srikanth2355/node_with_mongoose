@@ -7,7 +7,7 @@ exports.getproducts = (req,res,next)=>{
     .then((products)=>{
         // console.log('products returned',products)
         res.render('shop/products_list',
-        {prods: products,pagetitle:'Products',path:'/products'})
+        {prods: products,pagetitle:'Products',path:'/products',isauthenticated: req.session.isLoggedIn})
     })
     .catch(err=>console.log(err))
 }
@@ -18,7 +18,7 @@ exports.getspecificproduct = (req,res,next)=>{
     Product.findById(productid)
     .then((product)=>{
         res.render('shop/product_details',
-        {prod: product,pagetitle:'Specific product',path:'/products'})
+        {prod: product,pagetitle:'Specific product',path:'/products',isauthenticated: req.session.isLoggedIn})
     })
     .catch(err=>console.log(err))
 }
@@ -27,7 +27,7 @@ exports.getindex = (req,res,next)=>{
     Product.find()
     .then((products)=>{
         res.render('shop/index',
-        {prods: products,pagetitle:'Index',path:'/'})
+        {prods: products,pagetitle:'Index',path:'/',isauthenticated: req.session.isLoggedIn})
     })
     .catch(err=>console.log(err))
 }
@@ -39,7 +39,8 @@ exports.getcart = (req,res,next)=>{
             res.render('shop/cart',{
                 pagetitle:'cart',
                 path:'/cart',
-                products:products
+                products:products,
+                isauthenticated: req.session.isLoggedIn
             })
         })
     .catch(err=>console.log(err))
@@ -112,7 +113,8 @@ exports.getorders = (req,res,next)=>{
         res.render('shop/orders',{
             pagetitle:'orders',
             path:'/orders',
-            orders:orders
+            orders:orders,
+            isauthenticated: req.session.isLoggedIn
         })
     })
 
