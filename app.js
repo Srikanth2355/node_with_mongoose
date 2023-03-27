@@ -11,7 +11,7 @@ const user = require('./models/user')
 const mongoose =require('mongoose')
 const MongoDBStore = require('connect-mongodb-session')(session);
 
-const STRINGURL = 'mongodb+srv://gubbasrikanth2355:<Password>@nodejs-cluster.2oz3kso.mongodb.net/?retryWrites=true&w=majority'
+const STRINGURL = 'mongodb+srv://gubbasrikanth2355:Vh2LLxtgdYSAxEbg@nodejs-cluster.2oz3kso.mongodb.net/?retryWrites=true&w=majority'
 
 const store =  new MongoDBStore({
     uri: STRINGURL,
@@ -46,17 +46,5 @@ app.use(errorpage.pagenotfound)
 
 mongoose.connect(STRINGURL)
 .then((result)=>{
-    user.findOne().then(singleuser=>{
-        if(!singleuser){
-            const User = new user(
-                {
-                    name:"Srikanth",
-                    email:"sri@test.com",
-                    cart:{items:[]}
-                }
-            )
-            User.save()
-        }
-    })
     app.listen(3000)
 })
