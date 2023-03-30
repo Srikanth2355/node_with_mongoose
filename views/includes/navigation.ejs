@@ -15,11 +15,15 @@
             <li class="main-header__item">
                 <a class="<%= path === '/login' ? 'active' : '' %>" href="/login">Login</a>
             </li>
+            <li class="main-header__item">
+                <a class="<%= path === '/signup' ? 'active' : '' %>" href="/signup">Signup</a>
+            </li>
             <% } %>
 
             <% if(isauthenticated){ %>
             <li class="main-header__item">
                 <form action="/logout" method="post">
+                    <input type="hidden" name="_csrf" value="<%= csrftoken %>" />
                     <button type="submit" class="" style="text-decoration: none;
                     color: white;background-color: transparent;border:none;font-size: 14px;cursor:pointer">Logout</button>
                 </form>
@@ -38,6 +42,8 @@
         <li class="mobile-nav__item">
             <a class="<%= path === '/products' ? 'active' : '' %>" href="/products">Products</a>
         </li>
+        <% if(isauthenticated){ %>
+
         <li class="mobile-nav__item">
             <a class="<%= path === '/cart' ? 'active' : '' %>" href="/cart">Cart</a>
         </li>
@@ -52,9 +58,28 @@
             <a class="<%= path === '/admin/products' ? 'active' : '' %>" href="/admin/products">Admin Products
             </a>
         </li>
+        <% } %>
+        <% if(!isauthenticated){ %>
+
         <li class="mobile-nav__item">
             <a class="<%= path === '/login' ? 'active' : '' %>" href="/login">Login
             </a>
         </li>
+        <li class="mobile-nav__item">
+            <a class="<%= path === '/signup' ? 'active' : '' %>" href="/signup">Signup
+            </a>
+        </li>
+        <% } %>
+        <% if(isauthenticated){ %>
+        <li class="main-header__item">
+            <form action="/logout" method="post">
+                <input type="hidden" name="_csrf" value="<%= csrftoken %>" />
+                <button type="submit" class="" style="text-decoration: none;
+                color: white;background-color: transparent;border:none;font-size: 14px;cursor:pointer">Logout</button>
+            </form>
+
+        </li>
+        <% } %>
+
     </ul>
 </nav>

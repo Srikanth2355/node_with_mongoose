@@ -7,7 +7,7 @@ exports.getproducts = (req,res,next)=>{
     .then((products)=>{
         // console.log('products returned',products)
         res.render('shop/products_list',
-        {prods: products,pagetitle:'Products',path:'/products',isauthenticated: req.session.isLoggedIn})
+        {prods: products,pagetitle:'Products',path:'/products'})
     })
     .catch(err=>console.log(err))
 }
@@ -18,7 +18,7 @@ exports.getspecificproduct = (req,res,next)=>{
     Product.findById(productid)
     .then((product)=>{
         res.render('shop/product_details',
-        {prod: product,pagetitle:'Specific product',path:'/products',isauthenticated: req.session.isLoggedIn})
+        {prod: product,pagetitle:'Specific product',path:'/products'})
     })
     .catch(err=>console.log(err))
 }
@@ -27,7 +27,7 @@ exports.getindex = (req,res,next)=>{
     Product.find()
     .then((products)=>{
         res.render('shop/index',
-        {prods: products,pagetitle:'Index',path:'/',isauthenticated: req.session.isLoggedIn})
+        {prods: products,pagetitle:'Index',path:'/'})
     })
     .catch(err=>console.log(err))
 }
@@ -40,7 +40,6 @@ exports.getcart = (req,res,next)=>{
                 pagetitle:'cart',
                 path:'/cart',
                 products:products,
-                isauthenticated: req.session.isLoggedIn
             })
         })
     .catch(err=>console.log(err))
@@ -87,7 +86,7 @@ exports.postcreateorder = (req,res,next)=>{
         console.log("prod",products)
         const order = new Order({
             user:{
-                name:req.user.name,
+                email:req.user.email,
                 userId:req.user
             },
             products:products
@@ -114,7 +113,6 @@ exports.getorders = (req,res,next)=>{
             pagetitle:'orders',
             path:'/orders',
             orders:orders,
-            isauthenticated: req.session.isLoggedIn
         })
     })
 

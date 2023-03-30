@@ -2,7 +2,7 @@ const product = require('../models/product')
 const Product = require('../models/product')
 
 exports.getaddproduct = (req,res,next)=>{
-    res.render('admin/add_product',{pagetitle:"Add product",path:'admin/add-product',isauthenticated: req.session.isLoggedIn})
+    res.render('admin/add_product',{pagetitle:"Add product",path:'admin/add-product'})
 }
 
 exports.postaddproduct = (req,res,next)=>{
@@ -23,7 +23,7 @@ exports.getproducts = (req,res,next)=>{
     Product.find()
     // req.user.getProducts()
     .then(products=>{
-        res.render('admin/products',{prods: products,pagetitle:'Admin Products',path:'admin/products',isauthenticated: req.session.isLoggedIn})
+        res.render('admin/products',{prods: products,pagetitle:'Admin Products',path:'admin/products'})
     })
     .catch(err=>console.log(err))
     
@@ -34,7 +34,7 @@ exports.editproduct = (req,res,next)=>{
     // Product.findByPk(productid)
     Product.findById(productid)
     .then(product=>{
-        res.render('admin/edit_product',{prod:product,pagetitle:'Edit Product',path:'admin/edit-product',isauthenticated: req.session.isLoggedIn})
+        res.render('admin/edit_product',{prod:product,pagetitle:'Edit Product',path:'admin/edit-product'})
     })
     .catch(err=>{
         console.log(err)
