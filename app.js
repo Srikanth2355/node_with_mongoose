@@ -13,7 +13,7 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf')
 const flash = require('connect-flash')
 
-const STRINGURL = 'mongodb+srv://gubbasrikanth2355:Vh2LLxtgdYSAxEbg@nodejs-cluster.2oz3kso.mongodb.net/?retryWrites=true&w=majority'
+const STRINGURL = 'mongodb+srv://gubbasrikanth2355:<PASSWORD>@nodejs-cluster.2oz3kso.mongodb.net/?retryWrites=true&w=majority'
 
 const store =  new MongoDBStore({
     uri: STRINGURL,
