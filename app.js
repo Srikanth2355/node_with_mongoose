@@ -10,6 +10,8 @@ const errorpage = require('./controllers/404')
 const user = require('./models/user')
 const mongoose =require('mongoose')
 const MongoDBStore = require('connect-mongodb-session')(session);
+const csrf = require('csurf')
+const flash = require('connect-flash')
 
 const STRINGURL = 'mongodb+srv://gubbasrikanth2355:Vh2LLxtgdYSAxEbg@nodejs-cluster.2oz3kso.mongodb.net/?retryWrites=true&w=majority'
 
@@ -18,10 +20,14 @@ const store =  new MongoDBStore({
     collection: 'mySessions'
   });
 
+const csrfprotection = csrf()
+
 const app = express()
 app.use(bodyparser.urlencoded({ extended:true}))
 app.use(express.static(path.join(__dirname,'public')))
 app.use(session({secret:'my secret',resave:false,saveUninitialized:false,store:store}))
+app.use(csrfprotection)
+app.use(flash())
 
 app.use((req,res,next)=>{
     if(!req.session.user){
@@ -34,6 +40,13 @@ app.use((req,res,next)=>{
         })
         .catch(err=>console.log(err))
 })
+
+app.use((req,res,next)=>{
+    res.locals.isauthenticated = req.session.isLoggedIn,
+    res.locals.csrftoken=req.csrfToken()
+    next()
+})
+
 app.use('/admin',adminroutes)
 app.use(shoproutes)
 app.use(authroutes)
