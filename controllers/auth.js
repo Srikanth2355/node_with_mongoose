@@ -3,6 +3,8 @@ const bcrypt = require('bcryptjs')
 const nodemailer = require('nodemailer')
 const sendgridTransport = require('nodemailer-sendgrid-transport')
 const crypto = require('crypto')
+
+const { validationResult  } = require('express-validator')
 // const transporter = nodemailer.createTransport(sendgridTransport())
 exports.getLogin = (req,res,next)=>{
   let message = req.flash('error')
@@ -14,13 +16,32 @@ exports.getLogin = (req,res,next)=>{
   res.render('auth/login',{
       pagetitle:'login',
       path:'/login',
-      isauthenticated: false,
-      errormessage:message
+      errormessage:message,
+      oldInputvalues:{
+        email:"",
+        password:"",
+      }
+      
   })
 }
 exports.postLogin = (req,res,next)=>{
   const email = req.body.email
   const password = req.body.password
+  const error_result = validationResult(req)
+  console.log(error_result.array())
+  if(!error_result.isEmpty()){
+    let errors = error_result.array()
+    return res.status(422).render('auth/login', {
+      path: '/login',
+      pagetitle: 'Login',
+      errormessage:errors[0]['msg'],
+      oldInputvalues:{
+        email:email,
+        password:password,
+      }
+    });
+  }
+
     User.findOne({email:email})
     .then(user=>{
       if(!user){
@@ -66,7 +87,12 @@ exports.postLogout = (req, res, next) => {
       path: '/signup',
       pagetitle: 'Signup',
       isauthenticated: false,
-      errormessage:message
+      errormessage:message,
+      oldInputvalues:{
+        email:"",
+        password:"",
+        comfirmPassword:''
+      }
     });
   };
 
@@ -74,6 +100,23 @@ exports.postSignup = (req, res, next) => {
   const email = req.body.email
   const password = req.body.password
   const confirmPassword = req.body.confirmPassword
+
+  const error_result = validationResult(req)
+  console.log(error_result.array())
+  if(!error_result.isEmpty()){
+    let errors = error_result.array()
+    return res.status(422).render('auth/signup', {
+      path: '/signup',
+      pagetitle: 'Signup',
+      isauthenticated: false,
+      errormessage:errors[0]['msg'],
+      oldInputvalues:{
+        email:email,
+        password:password,
+        comfirmPassword:confirmPassword
+      }
+    });
+  }
 
   User.findOne({email:email})
   .then((doc)=>{
